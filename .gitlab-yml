@@ -1,0 +1,49 @@
+stages:
+  - test
+  - build
+  - package
+
+variables:
+  CI_REGISTRY_IMAGE: patrick3721/demo
+  DOCKER_IMAGE_TAG: "${CI_COMMIT_SHA:0:8}"  # Tag Docker image with the first 8 characters of the commit SHA
+  HELM_CHART_VERSION: "${CI_COMMIT_SHORT_SHA}"  # Use short commit SHA as Helm chart version
+  
+
+test:
+  stage: test
+  before_script:
+    - pip install -r requirements.txt
+  script:
+    - cd dhango/interview_project && python manage && python manage.py runserver 0.0.0.0:3000
+    - curl -s http://127.0.0.1:3000/v1/tools/lookup/?domain=www.yahoo.com
+
+flake8:
+  stage: test
+  image: python:3.9
+  script:
+    - pip install flake8
+    - flake8 .
+  only:
+    - merge_requests
+
+pylint:
+  stage: test
+  image: python:3.9
+  script:
+    - find . -type -f -name "*.py" | xargs pylint 
+
+build:
+  stage: build
+  image: docker:stable
+  services:
+    - docker:dind
+  script:
+    - docker build -t $CI_REGISTRY_IMAGE:$DOCKER_IMAGE_TAG .
+    - docker push $CI_REGISTRY_IMAGE:$DOCKER_IMAGE_TAG 
+
+package:
+  stage: package
+  image: alpine/helm:latest
+  script:
+    - helm package ./Chart --version $HELM_CHART_VERSION
+

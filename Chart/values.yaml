@@ -1,0 +1,13 @@
+replicaCount: 1
+image:
+  web: patrick3721/demo:v1.1
+  db: postgres:latest
+ports:
+  web: 3000
+  db: 5432
+nodePorts:
+  web: 30000
+env:
+  POSTGRES_DB: postgres
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: P@ssw0rd

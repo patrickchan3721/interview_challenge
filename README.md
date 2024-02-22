@@ -1,5 +1,5 @@
 # Interview_challenge
-This is my answer to the interview.
+This is my answer to the interview. Python Django is used to implement the API. A Python slim container will serve the API query. Every query is recorded in PostgreSQL container.
 
 This is the purpose of each sub-directory under project directory:
 - Chart  
@@ -36,6 +36,16 @@ Domain query
 patrick@minikube:~$ curl -s http://192.168.49.2:30000/
 {"version": "0.1.0", "date": 1708634337, "kubernetes": true}
 ```
+
+Validate IP
+```
+patrick@minikube:~$ curl http://192.168.49.2:30000/v1/tools/validate/?ip_address=192.168.1.1
+{"valid":true}
+
+patrick@minikube:~$ curl http://192.168.49.2:30000/v1/tools/validate/?ip_address=1.2.3.A
+{"valid":false}
+```
+
 
 History
 ```

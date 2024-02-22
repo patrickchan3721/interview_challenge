@@ -42,14 +42,17 @@ myweb-release-web-service   NodePort    10.100.193.125   <none>        3000:3000
 ## How to test:
 Root endpoint
 ```
-patrick@minikube:~$ curl -s http://192.168.49.2:30000/
+patrick@minikube:~$ curl http://192.168.49.2:30000/
 {"version": "0.1.0", "date": 1708634337, "kubernetes": true}
 ```
 
 Domain query
 ```
-patrick@minikube:~$ curl -s http://192.168.49.2:30000/
-{"version": "0.1.0", "date": 1708634337, "kubernetes": true}
+patrick@minikube:~$ curl http://192.168.49.2:30000/v1/tools/lookup/?domain=www.yahoo.com
+{"ip_address":"87.248.114.12"}
+
+patrick@minikube:~$ curl http://192.168.49.2:30000/v1/tools/lookup/?domain=www.cisco.com
+{"ip_address":"2.22.69.207"}
 ```
 
 Validate IP

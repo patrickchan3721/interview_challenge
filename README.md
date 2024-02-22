@@ -23,6 +23,21 @@ Please run this to install Helm Chart in Kubernetes:
 ```
 helm install myweb-release Chart
 ```
+A pod will be created with two containers (web & db).
+```
+patrick@minikube:~$ minikube kubectl -- get pods
+NAME                               READY   STATUS    RESTARTS      AGE
+myweb-deployment-db58d64fd-bz8lc   2/2     Running   1 (42m ago)   42m
+```
+Two services will be created.
+```
+patrick@minikube:~$ minikube kubectl -- get services
+NAME                        TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+db                          ClusterIP   10.99.76.32      <none>        5432/TCP         43m
+kubernetes                  ClusterIP   10.96.0.1        <none>        443/TCP          46h
+myweb-release-web-service   NodePort    10.100.193.125   <none>        3000:30000/TCP   43m
+```
+
 
 ## How to test:
 Root endpoint
